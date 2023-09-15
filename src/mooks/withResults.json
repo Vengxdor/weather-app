@@ -1,0 +1,41 @@
+{
+"location": {
+"name": "Chicago",
+"region": "Illinois",
+"country": "United States of America",
+"lat": 41.85,
+"lon": -87.65,
+"tz_id": "America/Chicago",
+"localtime_epoch": 1694798800,
+"localtime": "2023-09-15 12:26"
+},
+"current": {
+"last_updated_epoch": 1694798100,
+"last_updated": "2023-09-15 12:15",
+"temp_c": 22.8,
+"temp_f": 73,
+"is_day": 1,
+"condition": {
+"text": "Partly cloudy",
+"icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+"code": 1003
+},
+"wind_mph": 9.4,
+"wind_kph": 15.1,
+"wind_degree": 210,
+"wind_dir": "SSW",
+"pressure_mb": 1021,
+"pressure_in": 30.15,
+"precip_mm": 0,
+"precip_in": 0,
+"humidity": 41,
+"cloud": 25,
+"feelslike_c": 24.7,
+"feelslike_f": 76.4,
+"vis_km": 16,
+"vis_miles": 9,
+"uv": 6,
+"gust_mph": 6.3,
+"gust_kph": 10.1
+}
+}
