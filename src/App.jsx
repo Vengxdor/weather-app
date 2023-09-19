@@ -1,20 +1,22 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { FaLocationDot, FaWheatAwnCircleExclamation } from 'react-icons/fa6'
+import { FaLocationDot } from 'react-icons/fa6'
 
-import withResults from './mooks/withResults.json'
-/*
-*/
-const query = 'paris'
+// http://api.weatherapi.com/v1/current.json?key=215124bb3752471baff144311231509&q=paris
+
 const API_KEY = '215124bb3752471baff144311231509'
-const WEATHER_API = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${query}`
 
-function useWeatherInf () {
+function useWeatherInf (searchQuery) {
+  const WEATHER_API = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${searchQuery}`
   const [weatherInfo, setWeatherInfo] = useState({})
+  const [error, setError] = useState(null)
   useEffect(() => {
+    if (!searchQuery || searchQuery === '') return
     fetch(WEATHER_API)
       .then(res => res.json())
       .then(data => {
+        if (!data) return
+        if (data.error) setError(true)
         setWeatherInfo({
           icon: data.current.condition.icon,
           condition: data.current.condition.text,
@@ -25,20 +27,21 @@ function useWeatherInf () {
           country: data.location.country
         })
       })
-  }, [])
+  }, [searchQuery])
   return weatherInfo
 }
 
 function App () {
-  const info = useWeatherInf()
   const [typeTem, setTypeTem] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const filds = new window.FormData(e.target)
-    const query = filds.get('search')
-    console.log(query)
+    const newSearchQuery = filds.get('search')
+    setSearchQuery(newSearchQuery)
   }
+  const info = useWeatherInf(searchQuery)
 
   return (
     <>
@@ -49,7 +52,7 @@ function App () {
 
       <form onSubmit={handleSubmit} className='search'>
         <input type="text" name="search" placeholder='Search city, zip, state, IP' className="search__inp" autoComplete='off' />
-        <button type="submit" className='search__btn'>Search </button>
+        <button type="submit" className='search__btn'>Search</button>
       </form>
 
       <main>
