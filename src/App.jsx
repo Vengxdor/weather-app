@@ -7,14 +7,31 @@ import { FaLocationDot } from 'react-icons/fa6'
 const API_KEY = '215124bb3752471baff144311231509'
 
 function useWeatherInf (searchQuery) {
-  const WEATHER_API = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${searchQuery}`
+  // const WEATHER_API = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${searchQuery}`
   const [weatherInfo, setWeatherInfo] = useState({})
   const [error, setError] = useState(null)
   useEffect(() => {
-    if (!searchQuery || searchQuery === '') return
-    fetch(WEATHER_API)
-      .then(res => res.json())
-      .then(data => {
+    // Verificar si el navegador admite la API Geolocation
+    if ('geolocation' in navigator) {
+      // Obtener la ubicación del usuario
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+          searchQuery = `${latitude} ${longitude}`
+          console.log(searchQuery)
+        },
+        function (error) {
+          console.error('Error al obtener la ubicación:', error)
+        }
+      )
+    } else {
+      console.error('El navegador no admite la API Geolocation.')
+    }
+    if (searchQuery === '') return
+    fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${searchQuery}`)
+      .then((res) => res.json())
+      .then((data) => {
         if (!data) return
         if (data.error) setError(true)
         setWeatherInfo({
@@ -51,8 +68,16 @@ function App () {
       </div>
 
       <form onSubmit={handleSubmit} className='search'>
-        <input type="text" name="search" placeholder='Search city, zip, state, IP' className="search__inp" autoComplete='off' />
-        <button type="submit" className='search__btn'>Search</button>
+        <input
+          type='text'
+          name='search'
+          placeholder='Search city, zip, state, IP'
+          className='search__inp'
+          autoComplete='off'
+        />
+        <button type='submit' className='search__btn'>
+          Search
+        </button>
       </form>
 
       <main>
@@ -73,9 +98,7 @@ function App () {
           />
           <article>
             <h2 className='weather__temp'>{`${
-              typeTem
-                ? info.temp_c
-                : info.temp_f
+              typeTem ? info.temp_c : info.temp_f
             }°${typeTem ? 'C' : 'F'}`}</h2>
             <div className='switch'>
               <input

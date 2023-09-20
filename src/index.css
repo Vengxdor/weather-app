@@ -44,7 +44,7 @@ main {
   z-index: 2;
   margin: auto;
   width: 90vw;
-  height: 50vh;
+  height: 70%;
   border-radius: 25px;
   padding: 10px;
   background: rgb(255, 255, 255);
@@ -141,5 +141,19 @@ main {
     border-radius: 0 10px 10px 0;
     font-weight: 600;
     cursor: pointer;
+  }
+}
+
+  
+@media (min-width: 500px) {
+  main{
+    width: 70vw;
+  }
+}
+
+
+@media (min-width: 800px) {
+  main{
+    width: 50vw;
   }
 }
